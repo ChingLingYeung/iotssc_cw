@@ -8,19 +8,35 @@ from mbed_cloud.subscribe.channels import ResourceValues
 
 api = ConnectAPI()
 
-# for device in Device().list(max_results=10):
-#     print("Hello device %s" % device.name)
+def get_resourceValues():
+    channel = api.subscribe(ResourceValues(resource_path=['/3313/*', '/3334/*']))
+    samples = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    for result in channel:
+        path = result.block().get('resource_path')
+        if path == '/3313/0/5702':
+            samples[0] = result.block().get('payload')
+        elif path == '/3313/0/5703':
+            samples[1] = result.block().get('payload')
+        elif path == '/3313/0/5704':
+            samples[2] = result.block().get('payload')
+        elif path == '/3334/0/5702':
+            samples[3] = result.block().get('payload')
+        elif path == '/3334/0/5703':
+            samples[4] = result.block().get('payload')
+        elif path == '/3334/0/5704':
+            samples[5] = result.block().get('payload')
+        print(samples)
+        yield samples
 
-# notification = api.subscribe(
-#   api.subscribe.channels.DeviceStateChanges(device_id=1234)
-# ).next().block()
-# print(notification)
-# channel = subscribe.channels(ResourceValues(resource_path=['/4/0/1', '/3/*']))
-# api.subscribe.channels.ResourceValues()
-# test = ResourceValues(resource_path=['/4/0/1', '/3/*'])
-channel = api.subscribe(ResourceValues(resource_path=['/3313/*', '/3334/*']))
-for result in channel:
-  print(result.block())
+while True:
+    for sample in get_resourceValues():
+        print(sample)
+
+    
+
+# channel = api.subscribe(ResourceValues(resource_path=['/3313/*', '/3334/*']))
+# for result in channel:
+#   print(result.block())
 
 def data_generator():
     interval = 0.2
