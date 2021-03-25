@@ -2,7 +2,7 @@ from api import get_resourceValues
 import numpy as np
 import datetime
 import pymysql
-from mlModel import extractFeatures, predictAction
+from mlModel import predictAction
 
 select_all = '''select * from rawData; '''
 add_data_row = ''' insert into rawData (timestamp, accelX, accelY, accelZ, gyroX, gyroY, gyroZ) values ("%s", %.4f, %.4f, %.4f, %.4f, %.4f, %.4f)'''
@@ -12,7 +12,6 @@ select_last_row = ''' select id, timestamp, accelX, accelY, accelZ, gyroX, gyroY
 
 def update_db():
     conn = pymysql.connect(host="localhost", user="rawData_manager", password='password', database="CW")
-    # for samples in data_generator():
     for samples in get_resourceValues():
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
         accelX = samples[0]
@@ -22,8 +21,6 @@ def update_db():
         gyroY = samples[4]
         gyroZ = samples[5]
 
-        # lastdata = np.random.random((10,6))
-        # lastdata = get_last_ten_row()
         pred = predictAction(get_entire_table())
         if pred is not None:
             with conn.cursor() as cursor:
@@ -31,19 +28,14 @@ def update_db():
         else:
             with conn.cursor() as cursor:
                 cursor.execute(add_data_row % (timestamp, accelX, accelY, accelZ, gyroX, gyroY, gyroZ))
-
-        # with conn.cursor() as cursor:
-        #     cursor.execute(add_row % (timestamp, accelX, accelY, accelZ, gyroX, gyroY, gyroZ, pred))
         conn.commit()
         print("row added")
-#        features = extractFeatures(raw)
 
 def get_entire_table():
     conn = pymysql.connect(host="localhost", user="rawData_manager", password='password', database="CW")
     with conn.cursor() as cursor:
         cursor.execute(select_all)
         table = cursor.fetchall()
-        print(table)
         return table
 
 def get_last_ten_row():
@@ -51,7 +43,6 @@ def get_last_ten_row():
     with conn.cursor() as cursor:
         cursor.execute(select_last_row)
         row = cursor.fetchmany(10)
-        print(row)
         return row
 
 def get_latest_row():

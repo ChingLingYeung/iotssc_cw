@@ -4,6 +4,7 @@ import graphviz
 from sklearn import tree
 from sklearn.model_selection import train_test_split
 
+# ============== initial model training =========================
 # read in the .dat file as list of list
 raw_data_lst = [i.strip().split(",") for i in open("./dataset.csv").readlines()]
 # raw_data_lst
@@ -70,6 +71,8 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.5, random_
 clf = tree.DecisionTreeClassifier()
 clf = clf.fit(X_train, Y_train)
 
+#====================================================
+
 def extractFeatures(data):
     accel_x_lst = []
     accel_y_lst = []
@@ -129,19 +132,4 @@ def predictAction(data):
     features = np.array(extractFeatures(data))
     # print(features)
     pred = clf.predict(features.reshape(1, -1))
-    print(pred)
     return(pred)
-
-y_pred = clf.predict(X_test)
-total = 0
-correct = 0
-for i in range(len(Y_test)):
-    total += 1
-    if y_pred[i] == Y_test[i]:
-        correct += 1
-acc = np.round(correct/total, 2)
-print("Accuracy is {}".format(acc))
-
-dot_data = tree.export_graphviz(clf, out_file=None, filled=True)  
-graph = graphviz.Source(dot_data)  
-graph.render()
