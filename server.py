@@ -1,0 +1,27 @@
+from flask import Flask, make_response, jsonify
+from db_utils import update_db, get_entire_table, get_latest_row
+from threading import Thread
+
+webapp = Flask(__name__)
+
+
+@webapp.route('/history', methods=["GET"])
+def history():
+    table = get_entire_table()
+    json_table = jsonify(table)
+    resp = make_response(json_table, 200)
+    return resp
+
+
+@webapp.route("/latest_mean_std", methods=["GET"])
+def latest_data():
+    row = get_latest_row()
+    json_row = jsonify(row)
+    resp = make_response(json_row, 200)
+    return resp
+
+
+if __name__ == "__main__":
+    t = Thread(target=update_db)
+    t.start()
+    webapp.run('localhost', port=2333)
