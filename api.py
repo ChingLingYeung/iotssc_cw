@@ -14,23 +14,22 @@ def get_resourceValues():
     for result in channel:
         path = result.block().get('resource_path')
         if path == '/3313/0/5702':
-            samples[0] = result.block().get('payload')
+            samples[0] = float(result.block().get('payload').decode())
         elif path == '/3313/0/5703':
-            samples[1] = result.block().get('payload')
+            samples[1] = float(result.block().get('payload').decode())
         elif path == '/3313/0/5704':
-            samples[2] = result.block().get('payload')
+            samples[2] = float(result.block().get('payload').decode())
         elif path == '/3334/0/5702':
-            samples[3] = result.block().get('payload')
+            samples[3] = float(result.block().get('payload').decode())
         elif path == '/3334/0/5703':
-            samples[4] = result.block().get('payload')
+            samples[4] = float(result.block().get('payload').decode())
         elif path == '/3334/0/5704':
-            samples[5] = result.block().get('payload')
-        print(samples)
+            samples[5] = float(result.block().get('payload').decode())
         yield samples
 
-while True:
-    for sample in get_resourceValues():
-        print(sample)
+# while True:
+#     for sample in get_resourceValues():
+#         print(sample)
 
     
 

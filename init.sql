@@ -5,12 +5,13 @@ drop table if exists rawData;
 create table rawData(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     timestamp varchar(255),
-    accelX float(6, 4),
-    accelY float(6, 4),
-    accelZ float(6, 4),
-    gyroX float(6, 4),
-    gyroY float(6, 4),
-    gyroZ float(6, 4)
+    accelX float(6, 2),
+    accelY float(6, 2),
+    accelZ float(6, 2),
+    gyroX float(6, 2),
+    gyroY float(6, 2),
+    gyroZ float(6, 2),
+    classification INT
 );
 
 create user 'rawData_manager'@'localhost' identified by 'password';

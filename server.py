@@ -13,7 +13,7 @@ def history():
     return resp
 
 
-@webapp.route("/latest_mean_std", methods=["GET"])
+@webapp.route("/latest_data", methods=["GET"])
 def latest_data():
     row = get_latest_row()
     json_row = jsonify(row)

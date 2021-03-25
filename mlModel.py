@@ -78,7 +78,7 @@ def extractFeatures(data):
     gyro_y_lst = []
     gyro_z_lst = []
     for i in range(10):
-        for j in range(6):
+        for j in range(2, 8):
             accel_x_lst.append(data[i][j])
             accel_y_lst.append(data[i][j])
             accel_z_lst.append(data[i][j])
