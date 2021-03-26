@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import graphviz 
 from sklearn import tree
 from sklearn.model_selection import train_test_split
 

@@ -24,4 +24,4 @@ def latest_data():
 if __name__ == "__main__":
     t = Thread(target=update_db)
     t.start()
-    webapp.run('localhost', port=2333)
+    webapp.run('0.0.0.0', port=2333)
