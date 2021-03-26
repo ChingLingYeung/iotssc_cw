@@ -38,12 +38,37 @@ def get_entire_table():
         table = cursor.fetchall()
         return table
 
-def get_last_ten_row():
+def get_keys():
     conn = pymysql.connect(host="localhost", user="rawData_manager", password='password', database="CW")
+    #get JSON keys
+    keys = []
     with conn.cursor() as cursor:
-        cursor.execute(select_last_row)
-        row = cursor.fetchmany(10)
-        return row
+        cursor.execute('''SHOW COLUMNS from rawData; ''')
+        table = cursor.fetchall()
+        for row in table:
+            keys.append(row[0])
+    return(keys)
+        
+def get_json_table(table):
+    keys = get_keys()
+    json_data = []
+    # map keys and values
+    for row in table:
+        json_obj = get_json_row(row)
+        json_data.append(json_obj)
+    return json_data
+    
+def get_json_row(row):
+    keys = get_keys()
+    json_obj = {}
+    if len(row) < len(keys):
+        b = 'null'
+        row = row + (b,)
+    for i in range(len(keys)):
+        json_obj[keys[i]] = row[i]
+    return json_obj
+
+    
 
 def get_latest_row():
     conn = pymysql.connect(host="localhost", user="rawData_manager", password='password', database="CW")
