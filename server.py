@@ -5,6 +5,10 @@ from threading import Thread
 webapp = Flask(__name__)
 
 
+@webapp.route("/", methods=["GET"])
+def root():
+	return "Landing page"
+
 @webapp.route('/history', methods=["GET"])
 def history():
     table = get_entire_table()
