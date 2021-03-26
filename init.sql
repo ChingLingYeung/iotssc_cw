@@ -11,7 +11,8 @@ create table rawData(
     gyroX float(6, 2),
     gyroY float(6, 2),
     gyroZ float(6, 2),
-    classification INT
+    classification INT,
+    trueClass INT
 );
 
 create user 'rawData_manager'@'localhost' identified by 'password';
